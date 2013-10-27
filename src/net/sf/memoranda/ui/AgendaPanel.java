@@ -37,6 +37,7 @@ import net.sf.memoranda.util.Util;
 
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
 public class AgendaPanel extends JPanel {
+	String[] priorities = {"Muy Alta","Alta","Media","Baja","Muy Baja"};
 	BorderLayout borderLayout1 = new BorderLayout();
 	JButton historyBackB = new JButton();
 	JToolBar toolBar = new JToolBar();
@@ -101,9 +102,10 @@ public class AgendaPanel extends JPanel {
 						dlg.setVisible(true);
 						if (!dlg.CANCELLED) {
 							String txt = dlg.getStickerText();
+							int sP = dlg.getPriority();
 							txt = txt.replaceAll("\\n", "<br>");
-							txt = "<div style=\"background-color:"+dlg.getStickerColor()+"\">"+txt+"</div>";
-							EventsManager.createSticker(txt);
+							txt = "<div style=\"background-color:"+dlg.getStickerColor()+"\">"+txt+"<br> Prioridad: "+priorities[sP]+"</div>";
+							EventsManager.createSticker(txt,sP);
 							CurrentStorage.get().storeEventsManager();
 						}
 						refresh(CurrentDate.get());

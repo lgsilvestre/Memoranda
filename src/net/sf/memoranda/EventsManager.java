@@ -7,14 +7,15 @@
  */
 package net.sf.memoranda;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.Map;
-
 import java.util.Collections;
 //import java.util.ArrayList;
+
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.CurrentStorage;
@@ -56,9 +57,10 @@ public class EventsManager {
 
 	}
 
-	public static void createSticker(String text) {
+	public static void createSticker(String text, int prior) {
 		Element el = new Element("sticker");
 		el.addAttribute(new Attribute("id", Util.generateId()));
+		el.addAttribute(new Attribute("priority", prior+""));
 		el.appendChild(text);
 		_root.appendChild(el);
 	}
@@ -68,7 +70,7 @@ public class EventsManager {
 		Elements els = _root.getChildElements("sticker");
 		for (int i = 0; i < els.size(); i++) {
 			Element se = els.get(i);
-			m.put(se.getAttribute("id").getValue(), se.getValue());
+			m.put(se.getAttribute("id").getValue(), se);
 		}
 		return m;
 	}

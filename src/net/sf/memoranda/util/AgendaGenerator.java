@@ -22,6 +22,7 @@ import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
+import nu.xom.Element;
 /**
  *  
  */
@@ -381,10 +382,11 @@ public class AgendaGenerator {
                     + iurl
                     + "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"New sticker\"></a></td><td width=\"100%\"><a href=\"memoranda:addsticker\"><b>&nbsp;"
                     +Local.getString("Add sticker")+"</b></a></td></tr></table>";
-        Map stickers = EventsManager.getStickers();
-        for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
-            String id = (String)i.next();
-            String txt = (String)stickers.get(id);
+        PriorityQueue pQ = sortStickers();
+        while(!pQ.Vacia()){
+        	Element el = pQ.extraer();
+        	String id = el.getAttributeValue("id");
+        	String txt = el.getValue();
             s += "\n<table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr bgcolor=\"#E0E0E0\"><td align=\"right\">" +
                     "&nbsp;" + // without this removesticker link takes klicks from whole cell
   		    "<a href=\"memoranda:removesticker#"+id+"\"><img align=\"left\" width=\"14\" height=\"14\" src=\""
@@ -393,6 +395,17 @@ public class AgendaGenerator {
         }
         s += "<hr>";
         return s;
+    }
+    
+    private static PriorityQueue sortStickers(){
+    	Map stickers = EventsManager.getStickers();
+        PriorityQueue pQ = new PriorityQueue(stickers.size());
+        for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
+            String id = (String)i.next();
+            Element el = (Element)stickers.get(id);
+            pQ.insertar(new Pair(el,Integer.parseInt(el.getAttributeValue("priority"))));
+        }
+        return pQ;
     }
 
     public static String getAgenda(CalendarDate date, Collection expandedTasks) {

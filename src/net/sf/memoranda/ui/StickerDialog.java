@@ -75,7 +75,7 @@ public class StickerDialog extends JDialog {
 			Local.getString("Pink"),
 			Local.getString("Custom")+"..."};
 	JComboBox<String> stickerColor = new JComboBox<String>(colorLabels);
-	JComboBox priorityList = new JComboBox(priorities);
+	JComboBox<String> priorityList = new JComboBox<String>(priorities);
 
 	public StickerDialog(Frame frame) {
 		super(frame, Local.getString("Sticker"), true);
@@ -192,7 +192,10 @@ public class StickerDialog extends JDialog {
 		});
 		
 	}
-
+	
+	int getPriority(){
+		return priorityList.getSelectedIndex();
+	}
 	
 	int findColorIndex(Color c) {		
 		for (int i = 0; i < colors.length; i++)
