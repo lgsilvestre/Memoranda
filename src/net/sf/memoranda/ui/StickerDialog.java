@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
@@ -41,9 +42,12 @@ public class StickerDialog extends JDialog {
 	JPanel topPanel = new JPanel();
 	JLabel header = new JLabel();
 	JScrollPane jScrollPane1 = new JScrollPane();
-	JPanel jPanel1 = new JPanel();
+	JPanel jPanelcolor = new JPanel();
+	JPanel PanelPriority = new JPanel();
+	JPanel ContPanel = new JPanel();
 	JTextArea stickerText = new JTextArea();
-	JLabel jLabel1 = new JLabel();
+	JLabel jLabelcolor = new JLabel();
+	JLabel jLabelpriority = new JLabel();
 	BorderLayout borderLayout3 = new BorderLayout();
 
 	Border border1;
@@ -58,6 +62,7 @@ public class StickerDialog extends JDialog {
 			Color.CYAN,
 			Color.MAGENTA,
 			Color.PINK };
+	String[] priorities = {"Muy Alta","Alta","Media","Baja","Muy Baja"};
 	String[] colorLabels =
 		{
 			Local.getString("Yellow"),
@@ -69,7 +74,8 @@ public class StickerDialog extends JDialog {
 			Local.getString("Magenta"),
 			Local.getString("Pink"),
 			Local.getString("Custom")+"..."};
-	JComboBox stickerColor = new JComboBox(colorLabels);
+	JComboBox<String> stickerColor = new JComboBox<String>(colorLabels);
+	JComboBox priorityList = new JComboBox(priorities);
 
 	public StickerDialog(Frame frame) {
 		super(frame, Local.getString("Sticker"), true);
@@ -87,6 +93,7 @@ public class StickerDialog extends JDialog {
 	void jbInit() throws Exception {
 		stickerColor.setRenderer(new ComboBoxRenderer());
 		stickerColor.setMaximumRowCount(9);
+		priorityList.setSelectedIndex(2);
 		border1 =
 			BorderFactory.createCompoundBorder(
 				BorderFactory.createEtchedBorder(
@@ -128,22 +135,37 @@ public class StickerDialog extends JDialog {
             "resources/icons/sticker48.png")));
 		//header.setHorizontalAlignment(SwingConstants.LEFT);
 
-		jLabel1.setText(Local.getString("Sticker color")+": ");
-		jPanel1.setLayout(borderLayout3);
+		jLabelcolor.setText(Local.getString("Sticker color")+": ");
+		jLabelpriority.setText("Prioridad :");
+		jPanelcolor.setLayout(borderLayout3);
+		ContPanel.setLayout(new GridLayout(2,1));
+		PanelPriority.setLayout(new BorderLayout());
+		
 		panel1.setBorder(border1);
-		jPanel1.setBorder(border2);
+		jPanelcolor.setBorder(border2);
+		PanelPriority.setBorder(border2);
+		
+		PanelPriority.add(jLabelpriority,BorderLayout.WEST);
+		PanelPriority.add(priorityList, BorderLayout.CENTER);
+		
+		
+		jPanelcolor.add(jLabelcolor, BorderLayout.WEST);
+		jPanelcolor.add(stickerColor, BorderLayout.CENTER);
+		
+		ContPanel.add(PanelPriority);
+		ContPanel.add(jPanelcolor);
 		
 		getContentPane().add(panel1, BorderLayout.CENTER);
 		panel1.add(jScrollPane1, BorderLayout.CENTER);
 		jScrollPane1.getViewport().add(stickerText, null);
-		panel1.add(jPanel1, BorderLayout.SOUTH);
+		
+		
+		panel1.add(ContPanel, BorderLayout.SOUTH);
 		this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		bottomPanel.add(okButton);
 		bottomPanel.add(cancelButton);
 		this.getContentPane().add(topPanel, BorderLayout.NORTH);
 		topPanel.add(header);
-		jPanel1.add(jLabel1, BorderLayout.WEST);
-		jPanel1.add(stickerColor, BorderLayout.CENTER);
 		if (Context.get("STICKER_COLOR") != null) {
 			Color c = new Color(new Integer(Context.get("STICKER_COLOR").toString()).intValue());
 			stickerText.setBackground(c);
@@ -168,7 +190,9 @@ public class StickerDialog extends JDialog {
 				stickerColor_actionPerformed(e);
 			}
 		});
+		
 	}
+
 	
 	int findColorIndex(Color c) {		
 		for (int i = 0; i < colors.length; i++)
