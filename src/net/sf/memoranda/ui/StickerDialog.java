@@ -88,11 +88,11 @@ public class StickerDialog extends JDialog {
 		stickerColor.setRenderer(new ComboBoxRenderer());
 		stickerColor.setMaximumRowCount(9);
 		border1 =
-			BorderFactory.createCompoundBorder(
-				BorderFactory.createEtchedBorder(
-					Color.white,
-					new Color(156, 156, 158)),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5));
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createEtchedBorder(
+								Color.white,
+								new Color(156, 156, 158)),
+								BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		border2 = BorderFactory.createEmptyBorder(5, 0, 5, 0);
 		panel1.setLayout(borderLayout1);
 		this.getContentPane().setLayout(borderLayout2);
@@ -115,7 +115,7 @@ public class StickerDialog extends JDialog {
 			}
 		});
 		this.getRootPane().setDefaultButton(okButton);
-		
+
 		bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		topPanel.setBorder(new EmptyBorder(new Insets(0, 5, 0, 5)));
@@ -125,14 +125,14 @@ public class StickerDialog extends JDialog {
 		header.setForeground(new Color(0, 0, 124));
 		header.setText(Local.getString("Sticker"));
 		header.setIcon(new ImageIcon(net.sf.memoranda.ui.StickerDialog.class.getResource(
-            "resources/icons/sticker48.png")));
+				"resources/icons/sticker48.png")));
 		//header.setHorizontalAlignment(SwingConstants.LEFT);
 
 		jLabel1.setText(Local.getString("Sticker color")+": ");
 		jPanel1.setLayout(borderLayout3);
 		panel1.setBorder(border1);
 		jPanel1.setBorder(border2);
-		
+
 		getContentPane().add(panel1, BorderLayout.CENTER);
 		panel1.add(jScrollPane1, BorderLayout.CENTER);
 		jScrollPane1.getViewport().add(stickerText, null);
@@ -157,19 +157,19 @@ public class StickerDialog extends JDialog {
 			stickerText.setBackground(Color.YELLOW);
 		stickerText.setWrapStyleWord(true);
 		stickerText.setText(
-			CalendarDate.today().getLongDateString()
+				CalendarDate.today().getLongDateString()
 				+ " "
 				+ DateFormat.getTimeInstance(
-					DateFormat.SHORT,
-					Local.getCurrentLocale()).format(
-					new java.util.Date())+"\n");
+						DateFormat.SHORT,
+						Local.getCurrentLocale()).format(
+								new java.util.Date())+"\n");
 		stickerColor.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stickerColor_actionPerformed(e);
 			}
 		});
 	}
-	
+
 	int findColorIndex(Color c) {		
 		for (int i = 0; i < colors.length; i++)
 			if (c.equals(colors[i]))
@@ -183,7 +183,7 @@ public class StickerDialog extends JDialog {
 
 	public String getStickerColor() {
 		return "#"
-			+ Integer
+				+ Integer
 				.toHexString(stickerText.getBackground().getRGB() - 0xFF000000)
 				.toUpperCase();
 	}
@@ -202,10 +202,10 @@ public class StickerDialog extends JDialog {
 			stickerText.setBackground(colors[stickerColor.getSelectedIndex()]);
 		else {
 			Color c =
-				JColorChooser.showDialog(
-					this,
-					Local.getString("Sticker color"),
-					stickerText.getBackground());
+					JColorChooser.showDialog(
+							this,
+							Local.getString("Sticker color"),
+							stickerText.getBackground());
 			if (c != null)
 				stickerText.setBackground(c);
 		}
@@ -218,11 +218,11 @@ public class StickerDialog extends JDialog {
 
 		}
 		public Component getListCellRendererComponent(
-			JList list,
-			Object value,
-			int index,
-			boolean isSelected,
-			boolean cellHasFocus) {
+				JList list,
+				Object value,
+				int index,
+				boolean isSelected,
+				boolean cellHasFocus) {
 			/*
 			 * if (isSelected) { setBackground(list.getSelectionBackground());
 			 * setForeground(list.getSelectionForeground());

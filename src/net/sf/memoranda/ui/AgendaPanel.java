@@ -46,10 +46,10 @@ public class AgendaPanel extends JPanel {
 	JScrollPane scrollPane = new JScrollPane();
 
 	DailyItemsPanel parentPanel = null;
-	
-//	JPopupMenu agendaPPMenu = new JPopupMenu();
-//	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
-	
+
+	//	JPopupMenu agendaPPMenu = new JPopupMenu();
+	//	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
+
 	Collection expandedTasks;
 	String gotoTask = null;
 
@@ -60,7 +60,7 @@ public class AgendaPanel extends JPanel {
 			parentPanel = _parentPanel;
 			jbInit();
 		} catch (Exception ex) {
-		    new ExceptionDialog(ex);
+			new ExceptionDialog(ex);
 			ex.printStackTrace();
 		}
 	}
@@ -95,8 +95,8 @@ public class AgendaPanel extends JPanel {
 						dlg.setSize(new Dimension(300,380));
 						Point loc = App.getFrame().getLocation();
 						dlg.setLocation(
-							(frmSize.width - dlg.getSize().width) / 2 + loc.x,
-							(frmSize.height - dlg.getSize().height) / 2
+								(frmSize.width - dlg.getSize().width) / 2 + loc.x,
+								(frmSize.height - dlg.getSize().height) / 2
 								+ loc.y);
 						dlg.setVisible(true);
 						if (!dlg.CANCELLED) {
@@ -107,6 +107,7 @@ public class AgendaPanel extends JPanel {
 							CurrentStorage.get().storeEventsManager();
 						}
 						refresh(CurrentDate.get());
+						System.out.println("agregué un sticker");
 					} else if (d.startsWith("memoranda:expandsubtasks")) {
 						String id = d.split("#")[1];
 						gotoTask = id;
@@ -117,7 +118,9 @@ public class AgendaPanel extends JPanel {
 						gotoTask = id;
 						expandedTasks.remove(id);
 						refresh(CurrentDate.get());
-					}
+					} else if (d.startsWith("memoranda:expandsticker")) {
+							System.out.println("quiero expandir un sticker");
+						}
 				}
 			}
 		});
@@ -143,7 +146,7 @@ public class AgendaPanel extends JPanel {
 
 		this.setLayout(borderLayout1);
 		scrollPane.getViewport().setBackground(Color.white);
-		
+
 		scrollPane.getViewport().add(viewer, null);
 		this.add(scrollPane, BorderLayout.CENTER);
 		toolBar.add(historyBackB, null);
@@ -161,109 +164,109 @@ public class AgendaPanel extends JPanel {
 		CurrentProject.addProjectListener(new ProjectListener() {
 
 			public void projectChange(
-				Project prj,
-				NoteList nl,
-				TaskList tl,
-				ResourcesList rl) {
+					Project prj,
+					NoteList nl,
+					TaskList tl,
+					ResourcesList rl) {
 			}
 
 			public void projectWasChanged() {
 				if (isActive)
-                	refresh(CurrentDate.get());
+					refresh(CurrentDate.get());
 			}});
-        EventsScheduler.addListener(new EventNotificationListener() {
-            public void eventIsOccured(net.sf.memoranda.Event ev) {
-                if (isActive)
-                	refresh(CurrentDate.get());
-            }
+		EventsScheduler.addListener(new EventNotificationListener() {
+			public void eventIsOccured(net.sf.memoranda.Event ev) {
+				if (isActive)
+					refresh(CurrentDate.get());
+			}
 
-            public void eventsChanged() {
-                if (isActive)
-                	refresh(CurrentDate.get());
-            }
-        });
-        refresh(CurrentDate.get());
-                
-//        agendaPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
-//        agendaPPMenu.add(ppShowActiveOnlyChB);
-//        PopupListener ppListener = new PopupListener();
-//        viewer.addMouseListener(ppListener);
-//		ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
-//		ppShowActiveOnlyChB.setText(
-//			Local.getString("Show Active only"));
-//		ppShowActiveOnlyChB.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				toggleShowActiveOnly_actionPerformed(e);
-//			}
-//		});		
-//		boolean isShao =
-//			(Context.get("SHOW_ACTIVE_TASKS_ONLY") != null)
-//				&& (Context.get("SHOW_ACTIVE_TASKS_ONLY").equals("true"));
-//		ppShowActiveOnlyChB.setSelected(isShao);
-//		toggleShowActiveOnly_actionPerformed(null);		
-    }
-    
-    public void refresh(CalendarDate date) {
-    	viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks));
-    	SwingUtilities.invokeLater(new Runnable() {
-    		public void run() {
-		        if(gotoTask != null) {
-		        	viewer.scrollToReference(gotoTask);
-		        	scrollPane.setViewportView(viewer);
-		        	Util.debug("Set view port to " + gotoTask);
-		        }
-    		}
-    	});
-    	
-    	Util.debug("Summary updated.");
-    }
-    
-    public void setActive(boolean isa) {
-    	isActive = isa;
-    }
-    
-//	void toggleShowActiveOnly_actionPerformed(ActionEvent e) {
-//		Context.put(
-//			"SHOW_ACTIVE_TASKS_ONLY",
-//			new Boolean(ppShowActiveOnlyChB.isSelected()));
-//		/*if (taskTable.isShowActiveOnly()) {
-//			// is true, toggle to false
-//			taskTable.setShowActiveOnly(false);
-//			//showActiveOnly.setToolTipText(Local.getString("Show Active Only"));			
-//		}
-//		else {
-//			// is false, toggle to true
-//			taskTable.setShowActiveOnly(true);
-//			showActiveOnly.setToolTipText(Local.getString("Show All"));			
-//		}*/	    
-//		refresh(CurrentDate.get());
-////		parentPanel.updateIndicators();
-//		//taskTable.updateUI();
-//	}
+			public void eventsChanged() {
+				if (isActive)
+					refresh(CurrentDate.get());
+			}
+		});
+		refresh(CurrentDate.get());
 
-//    class PopupListener extends MouseAdapter {
-//
-//        public void mouseClicked(MouseEvent e) {
-//        	System.out.println("mouse clicked!");
-////			if ((e.getClickCount() == 2) && (taskTable.getSelectedRow() > -1))
-////				editTaskB_actionPerformed(null);
-//		}
-//
-//		public void mousePressed(MouseEvent e) {
-//        	System.out.println("mouse pressed!");
-//			maybeShowPopup(e);
-//		}
-//
-//		public void mouseReleased(MouseEvent e) {
-//        	System.out.println("mouse released!");
-//			maybeShowPopup(e);
-//		}
-//
-//		private void maybeShowPopup(MouseEvent e) {
-//			if (e.isPopupTrigger()) {
-//				agendaPPMenu.show(e.getComponent(), e.getX(), e.getY());
-//			}
-//		}
-//
-//    }
+		//        agendaPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
+		//        agendaPPMenu.add(ppShowActiveOnlyChB);
+		//        PopupListener ppListener = new PopupListener();
+		//        viewer.addMouseListener(ppListener);
+		//		ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
+		//		ppShowActiveOnlyChB.setText(
+		//			Local.getString("Show Active only"));
+		//		ppShowActiveOnlyChB.addActionListener(new java.awt.event.ActionListener() {
+		//			public void actionPerformed(ActionEvent e) {
+		//				toggleShowActiveOnly_actionPerformed(e);
+		//			}
+		//		});		
+		//		boolean isShao =
+		//			(Context.get("SHOW_ACTIVE_TASKS_ONLY") != null)
+		//				&& (Context.get("SHOW_ACTIVE_TASKS_ONLY").equals("true"));
+		//		ppShowActiveOnlyChB.setSelected(isShao);
+		//		toggleShowActiveOnly_actionPerformed(null);		
+	}
+
+	public void refresh(CalendarDate date) {
+		viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks));
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if(gotoTask != null) {
+					viewer.scrollToReference(gotoTask);
+					scrollPane.setViewportView(viewer);
+					Util.debug("Set view port to " + gotoTask);
+				}
+			}
+		});
+
+		Util.debug("Summary updated.");
+	}
+
+	public void setActive(boolean isa) {
+		isActive = isa;
+	}
+
+	//	void toggleShowActiveOnly_actionPerformed(ActionEvent e) {
+	//		Context.put(
+	//			"SHOW_ACTIVE_TASKS_ONLY",
+	//			new Boolean(ppShowActiveOnlyChB.isSelected()));
+	//		/*if (taskTable.isShowActiveOnly()) {
+	//			// is true, toggle to false
+	//			taskTable.setShowActiveOnly(false);
+	//			//showActiveOnly.setToolTipText(Local.getString("Show Active Only"));			
+	//		}
+	//		else {
+	//			// is false, toggle to true
+	//			taskTable.setShowActiveOnly(true);
+	//			showActiveOnly.setToolTipText(Local.getString("Show All"));			
+	//		}*/	    
+	//		refresh(CurrentDate.get());
+	////		parentPanel.updateIndicators();
+	//		//taskTable.updateUI();
+	//	}
+
+	//    class PopupListener extends MouseAdapter {
+	//
+	//        public void mouseClicked(MouseEvent e) {
+	//        	System.out.println("mouse clicked!");
+	////			if ((e.getClickCount() == 2) && (taskTable.getSelectedRow() > -1))
+	////				editTaskB_actionPerformed(null);
+	//		}
+	//
+	//		public void mousePressed(MouseEvent e) {
+	//        	System.out.println("mouse pressed!");
+	//			maybeShowPopup(e);
+	//		}
+	//
+	//		public void mouseReleased(MouseEvent e) {
+	//        	System.out.println("mouse released!");
+	//			maybeShowPopup(e);
+	//		}
+	//
+	//		private void maybeShowPopup(MouseEvent e) {
+	//			if (e.isPopupTrigger()) {
+	//				agendaPPMenu.show(e.getComponent(), e.getX(), e.getY());
+	//			}
+	//		}
+	//
+	//    }
 }
