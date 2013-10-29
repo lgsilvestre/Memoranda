@@ -385,7 +385,7 @@ public class AgendaGenerator {
 		for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
 			String id = (String)i.next();
 			String txt = (String)stickers.get(id);
-			txt=addHiperLink(txt,id);
+			txt=addHyperLink(txt,id);
 			s += "\n<table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr bgcolor=\"#E0E0E0\"><td align=\"right\">" +
 					"&nbsp;" + // without this removesticker link takes klicks from whole cell
 					"<a href=\"memoranda:removesticker#"+id+"\"><img align=\"left\" width=\"14\" height=\"14\" src=\""
@@ -398,13 +398,12 @@ public class AgendaGenerator {
 		return s;
 	}
 
-	private static String addHiperLink(String txt, String id) {
+	private static String addHyperLink(String txt, String id) {
 		String ret="";
 		int first=txt.indexOf(">");
 		int last=txt.lastIndexOf("<");
 		ret=txt.substring(0, first+1)+"<a href=\"memoranda:expandsticker#"+id+"\">"+txt.substring(first+1, last)
 				+"</a>"+txt.substring(last);
-		System.out.println(ret);
 		return ret;
 	}
 

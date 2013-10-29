@@ -12,9 +12,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.Map;
-
 import java.util.Collections;
 //import java.util.ArrayList;
+
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.CurrentStorage;
@@ -63,6 +63,7 @@ public class EventsManager {
 		_root.appendChild(el);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Map getStickers() {
 		Map m = new HashMap();
 		Elements els = _root.getChildElements("sticker");

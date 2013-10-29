@@ -119,8 +119,25 @@ public class AgendaPanel extends JPanel {
 						expandedTasks.remove(id);
 						refresh(CurrentDate.get());
 					} else if (d.startsWith("memoranda:expandsticker")) {
-							System.out.println("quiero expandir un sticker");
-						}
+						String id = d.split("#")[1];
+						String sticker=(String)EventsManager.getStickers().get(id);
+						int first=sticker.indexOf(">");
+						int last=sticker.lastIndexOf("<");
+						int color=sticker.indexOf(":");
+						String backGroundColor=sticker.substring(color+1, first-1);
+						System.out.println(backGroundColor);
+						sticker="<html>"+sticker.substring(first+1, last)+"</html>";
+						StickerExpand dlg = new StickerExpand(App.getFrame(),sticker,backGroundColor);
+						Dimension frmSize = App.getFrame().getSize();
+						dlg.setSize(new Dimension(300,200));
+						Point loc = App.getFrame().getLocation();
+						dlg.setLocation(
+								(frmSize.width - dlg.getSize().width) / 2 + loc.x,
+								(frmSize.height - dlg.getSize().height) / 2
+								+ loc.y);
+						dlg.stickerText.setText(sticker);
+						dlg.setVisible(true);
+					}
 				}
 			}
 		});
