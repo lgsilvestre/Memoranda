@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
@@ -18,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -35,8 +38,14 @@ public class StickerDialog extends JDialog {
 	JPanel panel1 = new JPanel();
 	BorderLayout borderLayout1 = new BorderLayout();
 	BorderLayout borderLayout2 = new BorderLayout();
+	
 	JButton cancelButton = new JButton();
 	JButton okButton = new JButton();
+	JButton boldButton= new JButton();
+	JButton italicButton= new JButton();
+	JButton underlineButton= new JButton();
+	JButton unorderedListButton= new JButton();
+	
 	JPanel bottomPanel = new JPanel();
 	JPanel topPanel = new JPanel();
 	JLabel header = new JLabel();
@@ -44,7 +53,9 @@ public class StickerDialog extends JDialog {
 	JPanel jPanel1 = new JPanel();
 	JTextArea stickerText = new JTextArea();
 	JLabel jLabel1 = new JLabel();
-	BorderLayout borderLayout3 = new BorderLayout();
+	JLabel jLabel2 = new JLabel();
+	JLabel jLabel3 = new JLabel();
+	GridLayout gridLayout1 = new GridLayout(5,2);
 
 	Border border1;
 	Border border2;
@@ -57,6 +68,8 @@ public class StickerDialog extends JDialog {
 			Color.GREEN,
 			Color.CYAN,
 			Color.MAGENTA,
+			Color.BLACK,
+			Color.WHITE,
 			Color.PINK };
 	String[] colorLabels =
 		{
@@ -67,9 +80,15 @@ public class StickerDialog extends JDialog {
 			Local.getString("Green"),
 			Local.getString("Cyan"),
 			Local.getString("Magenta"),
+			Local.getString("Black"),
+			Local.getString("White"),
 			Local.getString("Pink"),
 			Local.getString("Custom")+"..."};
+	int[] font={10,15,20};
+	String[] fontLabels= {"10px","15px","20px"};
 	JComboBox stickerColor = new JComboBox(colorLabels);
+	JComboBox textColor = new JComboBox(colorLabels);
+	JComboBox fontSize = new JComboBox(fontLabels);
 
 	public StickerDialog(Frame frame) {
 		super(frame, Local.getString("Sticker"), true);
@@ -116,6 +135,30 @@ public class StickerDialog extends JDialog {
 		});
 		this.getRootPane().setDefaultButton(okButton);
 		
+		boldButton.setText(Local.getString("Bold"));
+		boldButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boldButton_actionPerformed(e);
+			}
+		});
+		italicButton.setText(Local.getString("Italic"));
+		italicButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				italicButton_actionPerformed(e);
+			}
+		});
+		underlineButton.setText(Local.getString("Italic"));
+		underlineButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				underlineButton_actionPerformed(e);
+			}
+		});
+		unorderedListButton.setText("* "+Local.getString("List"));
+		unorderedListButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				unorderedListButton_actionPerformed(e);
+			}
+		});
 		bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		topPanel.setBorder(new EmptyBorder(new Insets(0, 5, 0, 5)));
@@ -129,7 +172,9 @@ public class StickerDialog extends JDialog {
 		//header.setHorizontalAlignment(SwingConstants.LEFT);
 
 		jLabel1.setText(Local.getString("Sticker color")+": ");
-		jPanel1.setLayout(borderLayout3);
+		jLabel2.setText(Local.getString("Font color")+": ");
+		jLabel3.setText(Local.getString("Font Size")+": ");
+		jPanel1.setLayout(gridLayout1);
 		panel1.setBorder(border1);
 		jPanel1.setBorder(border2);
 		
@@ -142,8 +187,19 @@ public class StickerDialog extends JDialog {
 		bottomPanel.add(cancelButton);
 		this.getContentPane().add(topPanel, BorderLayout.NORTH);
 		topPanel.add(header);
-		jPanel1.add(jLabel1, BorderLayout.WEST);
-		jPanel1.add(stickerColor, BorderLayout.CENTER);
+		
+		jPanel1.add(jLabel1);
+		jPanel1.add(stickerColor);
+		jPanel1.add(jLabel2);
+		jPanel1.add(textColor);
+		jPanel1.add(jLabel3);
+		jPanel1.add(fontSize);
+		
+		jPanel1.add(boldButton);
+		jPanel1.add(italicButton);
+		jPanel1.add(underlineButton);
+		jPanel1.add(unorderedListButton);
+		
 		if (Context.get("STICKER_COLOR") != null) {
 			Color c = new Color(new Integer(Context.get("STICKER_COLOR").toString()).intValue());
 			stickerText.setBackground(c);
@@ -168,8 +224,44 @@ public class StickerDialog extends JDialog {
 				stickerColor_actionPerformed(e);
 			}
 		});
+		if (Context.get("TEXT_COLOR") != null) {
+			Color d = new Color(new Integer(Context.get("TEXT_COLOR").toString()).intValue());
+			stickerText.setForeground(d);
+			int i = findColorIndex(d);
+			if (i > -1){
+				if(i!=stickerColor.getSelectedIndex()){
+					textColor.setSelectedIndex(i);
+				}
+				else{
+					textColor.setSelectedIndex(i+1);
+					stickerText.setForeground(colors[i]);
+				}
+			}
+			else
+				textColor.setSelectedIndex(8);
+		}
+		else
+			stickerText.setForeground(Color.BLACK);
+		textColor.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textColor_actionPerformed(e);
+			}
+		});
+		if (Context.get("TEXT_SIZE") != null) {
+			int h= (fontSize.getSelectedIndex()*5)+10;
+			if (h!=10 && h!=15 && h!=20) h=15;
+			Font f= stickerText.getFont();
+			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, h));
+		}
+		else
+			stickerText.setForeground(Color.BLACK);
+		fontSize.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fontSize_actionPerformed(e);
+			}
+		});
 	}
-	
+
 	int findColorIndex(Color c) {		
 		for (int i = 0; i < colors.length; i++)
 			if (c.equals(colors[i]))
@@ -180,7 +272,9 @@ public class StickerDialog extends JDialog {
 	public String getStickerText() {
 		return stickerText.getText();
 	}
-
+	public int getStickerTextSize() {
+		return stickerText.getFont().getSize();
+	}
 	public String getStickerColor() {
 		return "#"
 			+ Integer
@@ -196,10 +290,44 @@ public class StickerDialog extends JDialog {
 		CANCELLED = false;
 		this.dispose();
 	}
-
+	void boldButton_actionPerformed(ActionEvent e) {
+		int pos=stickerText.getCaretPosition();
+		stickerText.insert("<b></b>", pos);
+		stickerText.requestFocusInWindow();
+		stickerText.setCaretPosition(pos+3);
+	}
+	void italicButton_actionPerformed(ActionEvent e) {
+		int pos=stickerText.getCaretPosition();
+		stickerText.insert("<i></i>", pos);
+		stickerText.requestFocusInWindow();
+		stickerText.setCaretPosition(pos+3);
+	}
+	protected void underlineButton_actionPerformed(ActionEvent e) {
+		int pos=stickerText.getCaretPosition();
+		stickerText.insert("<u></u>", pos);
+		stickerText.requestFocusInWindow();
+		stickerText.setCaretPosition(pos+3);
+	}
+	void unorderedListButton_actionPerformed(ActionEvent e) {
+		int pos=stickerText.getCaretPosition();
+		stickerText.insert("<li></li>", pos);
+		stickerText.requestFocusInWindow();
+		stickerText.setCaretPosition(pos+4);
+	}
 	void stickerColor_actionPerformed(ActionEvent e) {
-		if (stickerColor.getSelectedIndex() < colors.length)
-			stickerText.setBackground(colors[stickerColor.getSelectedIndex()]);
+		int i=stickerColor.getSelectedIndex();
+		if (i< colors.length){
+			if(i!=textColor.getSelectedIndex()){
+				stickerText.setBackground(colors[i]);
+				stickerColor.setSelectedIndex(i);
+			}
+			else{
+				stickerColor.setSelectedIndex(i+1);
+				stickerText.setBackground(colors[i+1]);
+				JOptionPane.showMessageDialog(this, Local.getString("SAME BACKGROUND COLOR"), "Error", 0);
+			}
+			stickerText.setForeground(colors[textColor.getSelectedIndex()]);
+		}
 		else {
 			Color c =
 				JColorChooser.showDialog(
@@ -211,7 +339,40 @@ public class StickerDialog extends JDialog {
 		}
 		Context.put("STICKER_COLOR", new Integer(stickerText.getBackground().getRGB()));
 	}
-
+	void textColor_actionPerformed(ActionEvent e) {
+		int i=textColor.getSelectedIndex();
+		if (i < colors.length){
+			if(i!=stickerColor.getSelectedIndex()){
+				stickerText.setForeground(colors[i]);
+				textColor.setSelectedIndex(i);
+			}
+			else{
+				textColor.setSelectedIndex(i+1);
+				stickerText.setForeground(colors[i+1]);
+				JOptionPane.showMessageDialog(this, Local.getString("SAME FOREGROUND COLOR"), "Error", 0);
+			}
+			stickerText.setForeground(colors[textColor.getSelectedIndex()]);
+		}
+		else {
+			Color c =
+				JColorChooser.showDialog(
+					this,
+					Local.getString("Text color"),
+					stickerText.getForeground());
+			if (c != null)
+				stickerText.setForeground(c);
+		}
+		Context.put("TEXT_COLOR", new Integer(stickerText.getForeground().getRGB()));		
+	}
+	protected void fontSize_actionPerformed(ActionEvent e) {
+		int i=fontSize.getSelectedIndex();
+		if (i < fontLabels.length){
+			Font f= stickerText.getFont();
+			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, (i*5)+10));
+		}
+		fontSize.setSelectedIndex(i);
+		Context.put("TEXT_SIZE", new Integer(stickerText.getFont().getSize()));		
+		}
 	class ComboBoxRenderer extends JLabel implements ListCellRenderer {
 		public ComboBoxRenderer() {
 			setOpaque(true);
