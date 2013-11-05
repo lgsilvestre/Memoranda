@@ -1,3 +1,7 @@
+Done by Cristian Andrade
+- Color to the foreground on stickers
+- Simple HTML Format to stickers 
+
 Done since Memoranda 1.0-RC3 (20050517)
 
 - Fixed: Dates in TaskTable were not localized

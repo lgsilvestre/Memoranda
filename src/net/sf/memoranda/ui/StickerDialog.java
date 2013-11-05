@@ -105,7 +105,9 @@ public class StickerDialog extends JDialog {
 	}
 	void jbInit() throws Exception {
 		stickerColor.setRenderer(new ComboBoxRenderer());
-		stickerColor.setMaximumRowCount(9);
+		stickerColor.setMaximumRowCount(11);
+		textColor.setRenderer(new ComboBoxRenderer2());
+		textColor.setMaximumRowCount(11);
 		border1 =
 			BorderFactory.createCompoundBorder(
 				BorderFactory.createEtchedBorder(
@@ -400,11 +402,39 @@ public class StickerDialog extends JDialog {
 			 * if (isSelected) { setBackground(list.getSelectionBackground());
 			 * setForeground(list.getSelectionForeground());
 			 */
+			if(index==7){
+				this.setForeground(Color.WHITE);
+			}
+			else setForeground(list.getForeground());
 			if ((index > -1) && (index < colors.length))
 				setBackground(colors[index]);
 			else
 				setBackground(list.getBackground());
-			setForeground(list.getForeground());
+			//}
+			setText(value.toString());
+			return this;
+		}
+	}
+	class ComboBoxRenderer2 extends JLabel implements ListCellRenderer {
+		public ComboBoxRenderer2() {
+			setOpaque(true);
+
+		}
+		public Component getListCellRendererComponent(
+			JList list,
+			Object value,
+			int index,
+			boolean isSelected,
+			boolean cellHasFocus) {
+			/*
+			 * if (isSelected) { setBackground(list.getSelectionBackground());
+			 * setForeground(list.getSelectionForeground());
+			 */
+			if ((index > -1) && (index < colors.length))
+				setForeground(colors[index]);
+			else
+				setForeground(list.getForeground());
+			setBackground(list.getBackground());
 			//}
 			setText(value.toString());
 			return this;
