@@ -89,6 +89,30 @@ public class AgendaPanel extends JPanel {
 						EventsManager.removeSticker(id);
 						CurrentStorage.get().storeEventsManager();
 						refresh(CurrentDate.get());
+					} else if (d.startsWith("memoranda:editsticker")) {
+						String id = d.split("#")[1];
+						String sticker=(String)EventsManager.getStickers().get(id);
+                        int first=sticker.indexOf(">");
+                        int last=sticker.indexOf("<br>");
+						StickerDialog dlg = new StickerDialog(App.getFrame());
+						Dimension frmSize = App.getFrame().getSize();
+						dlg.setSize(new Dimension(300,380));
+						Point loc = App.getFrame().getLocation();
+						dlg.setLocation(
+							(frmSize.width - dlg.getSize().width) / 2 + loc.x,
+							(frmSize.height - dlg.getSize().height) / 2
+								+ loc.y);
+						dlg.stickerText.setText(sticker.substring(first+1, last));
+						dlg.setVisible(true);
+						if (!dlg.CANCELLED) {
+							String txt = dlg.getStickerText();
+							txt = txt.replaceAll("\\n", "<br>");
+							txt = "<div style=\"background-color:"+dlg.getStickerColor()+"\">"+txt+"</div>";
+							EventsManager.removeSticker(id);
+							EventsManager.createSticker(txt);
+							CurrentStorage.get().storeEventsManager();
+						}
+						refresh(CurrentDate.get());						
 					} else if (d.startsWith("memoranda:addsticker")) {
 						StickerDialog dlg = new StickerDialog(App.getFrame());
 						Dimension frmSize = App.getFrame().getSize();
@@ -117,7 +141,7 @@ public class AgendaPanel extends JPanel {
 						gotoTask = id;
 						expandedTasks.remove(id);
 						refresh(CurrentDate.get());
-					}
+   					}
 				}
 			}
 		});

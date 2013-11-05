@@ -385,14 +385,27 @@ public class AgendaGenerator {
         for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
             String id = (String)i.next();
             String txt = (String)stickers.get(id);
+            txt=addHyperLink(txt,id);
             s += "\n<table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr bgcolor=\"#E0E0E0\"><td align=\"right\">" +
                     "&nbsp;" + // without this removesticker link takes klicks from whole cell
   		    "<a href=\"memoranda:removesticker#"+id+"\"><img align=\"left\" width=\"14\" height=\"14\" src=\""
                     + iurl2
-                    + "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"Remove sticker\"></a></td></tr><tr><td>"+txt+"</td></tr></table>";
+                    + "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"Remove sticker\"></a></td>"
+					+ "</tr><tr><td><a href=\"memoranda:editsticker#"+id+"\">Editar</a>"+txt+"</td></tr></table>";
         }
         s += "<hr>";
+        System.out.println(s);
         return s;
+    }
+    
+    private static String addHyperLink(String txt, String id) {
+        String ret="";
+        int first=txt.indexOf(">");
+        int last=txt.lastIndexOf("<");
+        ret=txt.substring(0, first+1)+"<a href=\"memoranda:editsticker#"+id+"\">"+txt.substring(first+1, last)
+                        +"</a>"+txt.substring(last);
+        System.out.println(ret);
+        return ret;
     }
 
     public static String getAgenda(CalendarDate date, Collection expandedTasks) {
