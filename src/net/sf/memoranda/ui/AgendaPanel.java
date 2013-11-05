@@ -86,8 +86,18 @@ public class AgendaPanel extends JPanel {
 						CurrentProject.set(ProjectManager.getProject(id));
 					} else if (d.startsWith("memoranda:removesticker")) {
 						String id = d.split("#")[1];
+						StickerConfirmation stc = new StickerConfirmation(App.getFrame());
+						Dimension frmSize = App.getFrame().getSize();
+						stc.setSize(new Dimension(300,180));
+						Point loc = App.getFrame().getLocation();
+						stc.setLocation(
+							(frmSize.width - stc.getSize().width) / 2 + loc.x,
+							(frmSize.height - stc.getSize().height) / 2
+								+ loc.y);
+						stc.setVisible(true);
+						if (!stc.CANCELLED) {
 						EventsManager.removeSticker(id);
-						CurrentStorage.get().storeEventsManager();
+						CurrentStorage.get().storeEventsManager();}
 						refresh(CurrentDate.get());
 					} else if (d.startsWith("memoranda:addsticker")) {
 						StickerDialog dlg = new StickerDialog(App.getFrame());
