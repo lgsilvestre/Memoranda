@@ -147,7 +147,7 @@ public class StickerDialog extends JDialog {
 				italicButton_actionPerformed(e);
 			}
 		});
-		underlineButton.setText(Local.getString("Italic"));
+		underlineButton.setText(Local.getString("Underline"));
 		underlineButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				underlineButton_actionPerformed(e);
@@ -207,10 +207,12 @@ public class StickerDialog extends JDialog {
 			if (i > -1)
 				stickerColor.setSelectedIndex(i);
 			else
-				stickerColor.setSelectedIndex(8);
+				stickerColor.setSelectedIndex(10);
 		}
-		else
+		else{
 			stickerText.setBackground(Color.YELLOW);
+			stickerColor.setSelectedIndex(0);
+		}
 		stickerText.setWrapStyleWord(true);
 		stickerText.setText(
 			CalendarDate.today().getLongDateString()
@@ -238,23 +240,27 @@ public class StickerDialog extends JDialog {
 				}
 			}
 			else
-				textColor.setSelectedIndex(8);
+				textColor.setSelectedIndex(10);
 		}
-		else
+		else{
 			stickerText.setForeground(Color.BLACK);
+			textColor.setSelectedIndex(7);
+		}
 		textColor.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textColor_actionPerformed(e);
 			}
 		});
+		Font f= stickerText.getFont();
 		if (Context.get("TEXT_SIZE") != null) {
 			int h= (fontSize.getSelectedIndex()*5)+10;
 			if (h!=10 && h!=15 && h!=20) h=15;
-			Font f= stickerText.getFont();
 			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, h));
 		}
-		else
-			stickerText.setForeground(Color.BLACK);
+		else{
+			stickerText.setFont(new Font(f.getFontName(), f.PLAIN, 15));
+			fontSize.setSelectedIndex(1);
+		}
 		fontSize.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fontSize_actionPerformed(e);
@@ -272,9 +278,15 @@ public class StickerDialog extends JDialog {
 	public String getStickerText() {
 		return stickerText.getText();
 	}
-	public int getStickerTextSize() {
-		return stickerText.getFont().getSize();
+	public String getStickerTextSize() {
+		return ""+stickerText.getFont().getSize();
 	}
+	public String getStickerTextColor(){
+		return "#"
+				+ Integer
+					.toHexString(stickerText.getForeground().getRGB() - 0xFF000000)
+					.toUpperCase();	
+		}
 	public String getStickerColor() {
 		return "#"
 			+ Integer

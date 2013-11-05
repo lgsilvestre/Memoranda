@@ -102,7 +102,7 @@ public class AgendaPanel extends JPanel {
 						if (!dlg.CANCELLED) {
 							String txt = dlg.getStickerText();
 							txt = txt.replaceAll("\\n", "<br>");
-							txt = "<div style=\"background-color:"+dlg.getStickerColor()+";font-size:"+dlg.getStickerTextSize()+"\">"+txt+"</div>";
+							txt = "<div style=\"background-color:"+dlg.getStickerColor()+";font-size:"+dlg.getStickerTextSize()+";color:"+dlg.getStickerTextColor()+";\">"+txt+"</div>";
 							EventsManager.createSticker(txt);
 							CurrentStorage.get().storeEventsManager();
 						}
