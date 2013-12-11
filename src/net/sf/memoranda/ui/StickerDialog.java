@@ -55,7 +55,8 @@ public class StickerDialog extends JDialog {
 	JLabel jLabel1 = new JLabel();
 	JLabel jLabel2 = new JLabel();
 	JLabel jLabel3 = new JLabel();
-	GridLayout gridLayout1 = new GridLayout(5,2);
+	JLabel jLabel4 = new JLabel();
+	GridLayout gridLayout1 = new GridLayout(6,2);
 
 	Border border1;
 	Border border2;
@@ -84,11 +85,19 @@ public class StickerDialog extends JDialog {
 			Local.getString("White"),
 			Local.getString("Pink"),
 			Local.getString("Custom")+"..."};
+	String[] priorities = {
+			Local.getString("HIGHEST"),
+			Local.getString("HIGH"),
+			Local.getString("NORMAL"),
+			Local.getString("LOW"),
+			Local.getString("LOWEST")};
 	int[] font={10,15,20};
 	String[] fontLabels= {"10px","15px","20px"};
 	JComboBox stickerColor = new JComboBox(colorLabels);
 	JComboBox textColor = new JComboBox(colorLabels);
 	JComboBox fontSize = new JComboBox(fontLabels);
+	JComboBox priorityList = new JComboBox(priorities);
+	
 
 	public StickerDialog(Frame frame) {
 		super(frame, Local.getString("Sticker"), true);
@@ -99,6 +108,32 @@ public class StickerDialog extends JDialog {
 			new ExceptionDialog(ex);
 		}
 	}
+	public StickerDialog(Frame frame, String text, String backcolor, String forecolor, int sP){
+		super(frame, Local.getString("Sticker"), true);
+		try {
+			jbInit();
+			pack();
+		} catch (Exception ex) {
+			new ExceptionDialog(ex);
+		}
+		stickerText.setText(text);
+		Color back = Color.decode(backcolor);
+		Color front = Color.decode(forecolor);
+		int i = findColorIndex(back);
+		if (i > -1)
+			stickerColor.setSelectedIndex(i);
+		else
+			stickerColor.setSelectedIndex(10);
+		i = findColorIndex(front);
+		if (i > -1)
+			textColor.setSelectedIndex(i);
+		else
+			textColor.setSelectedIndex(stickerColor.getSelectedIndex()+1);
+		if (sP > -1 && sP < 5)
+			priorityList.setSelectedIndex(sP);
+		else
+			priorityList.setSelectedIndex(2);
+	}
 
 	public StickerDialog() {
 		this(null);
@@ -108,6 +143,7 @@ public class StickerDialog extends JDialog {
 		stickerColor.setMaximumRowCount(11);
 		textColor.setRenderer(new ComboBoxRenderer2());
 		textColor.setMaximumRowCount(11);
+		priorityList.setSelectedIndex(2);
 		border1 =
 			BorderFactory.createCompoundBorder(
 				BorderFactory.createEtchedBorder(
@@ -176,6 +212,7 @@ public class StickerDialog extends JDialog {
 		jLabel1.setText(Local.getString("Sticker color")+": ");
 		jLabel2.setText(Local.getString("Font color")+": ");
 		jLabel3.setText(Local.getString("Font Size")+": ");
+		jLabel4.setText(Local.getString("Priority")+": ");
 		jPanel1.setLayout(gridLayout1);
 		panel1.setBorder(border1);
 		jPanel1.setBorder(border2);
@@ -201,6 +238,8 @@ public class StickerDialog extends JDialog {
 		jPanel1.add(italicButton);
 		jPanel1.add(underlineButton);
 		jPanel1.add(unorderedListButton);
+		jPanel1.add(jLabel4);
+		jPanel1.add(priorityList);
 		
 		if (Context.get("STICKER_COLOR") != null) {
 			Color c = new Color(new Integer(Context.get("STICKER_COLOR").toString()).intValue());
@@ -294,6 +333,9 @@ public class StickerDialog extends JDialog {
 			+ Integer
 				.toHexString(stickerText.getBackground().getRGB() - 0xFF000000)
 				.toUpperCase();
+	}
+	int getPriority(){
+		return priorityList.getSelectedIndex();
 	}
 
 	void cancelButton_actionPerformed(ActionEvent e) {
