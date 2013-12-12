@@ -41,6 +41,7 @@ public class AgendaPanel extends JPanel {
 	JButton historyBackB = new JButton();
 	JToolBar toolBar = new JToolBar();
 	JButton historyForwardB = new JButton();
+	JButton export = new JButton();
 	JEditorPane viewer = new JEditorPane("text/html", "");
 
 	JScrollPane scrollPane = new JScrollPane();
@@ -128,6 +129,12 @@ public class AgendaPanel extends JPanel {
 						expandedTasks.remove(id);
 						refresh(CurrentDate.get());
 					}
+					 else if (d.startsWith("memoranda:exportstickers")) {
+						/*	Falta agregar el exportar sticker mientras tanto..*/
+						}
+					 else if (d.startsWith("memoranda:importstickers")) {
+						/*	Falta agregar el importar sticker mientras tanto... */
+						}
 				}
 			}
 		});
