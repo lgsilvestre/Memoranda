@@ -9,12 +9,15 @@ import java.util.Collection;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.JOptionPane;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.EventNotificationListener;
@@ -129,11 +132,29 @@ public class AgendaPanel extends JPanel {
 						expandedTasks.remove(id);
 						refresh(CurrentDate.get());
 					}
-					 else if (d.startsWith("memoranda:exportstickers")) {
+					 else if (d.startsWith("memoranda:exportstickerst")) {
 						/*	Falta agregar el exportar sticker mientras tanto..*/
-						}
+						 
+						 final JFrame parent = new JFrame();
+				     	 String name = JOptionPane.showInputDialog(parent,Local.getString("Ingrese nombre de archivo a exportar"),null);
+				       	 new ExportSticker(name).export("txt");
+				     	 //JOptionPane.showMessageDialog(null,name);
+						 						   
+					  	}
+					 else if (d.startsWith("memoranda:exportstickersh")) {
+							/*	Falta agregar el exportar sticker mientras tanto..*/
+							 
+							 final JFrame parent = new JFrame();
+					     	 String name = JOptionPane.showInputDialog(parent,Local.getString("Ingrese nombre de archivo a exportar"),null);
+					       	 new ExportSticker(name).export("html");
+					     	 //JOptionPane.showMessageDialog(null,name);
+							 						   
+						  	}
 					 else if (d.startsWith("memoranda:importstickers")) {
-						/*	Falta agregar el importar sticker mientras tanto... */
+						 final JFrame parent = new JFrame();
+						 String name = JOptionPane.showInputDialog(parent,Local.getString("Ingrese nombre de archivo a importar"),null);
+				    	 new ImportSticker(name).import_file();
+						     	
 						}
 				}
 			}
