@@ -162,7 +162,7 @@ public class JNCalendarPanel extends JPanel {
     
     yearSpin.setPreferredSize(new Dimension(70, 20));
     yearSpin.setRequestFocusEnabled(false);
-	yearSpin.setEditor(yearSpinner);
+        yearSpin.setEditor(yearSpinner);
     navbPanel.setMinimumSize(new Dimension(202, 30));
     navbPanel.setOpaque(false);
     navbPanel.setPreferredSize(new Dimension(155, 30));
@@ -253,7 +253,7 @@ public class JNCalendarPanel extends JPanel {
   private void refreshView() {
     ignoreChange = true;
     jnCalendar.set(_date);
-    monthsCB.setSelectedIndex(_date.getMonth());
+    monthsCB.setSelectedIndex(new Integer(_date.getMonth()));
     yearSpin.setValue(new Integer(_date.getYear()));
     ignoreChange = false;
   }

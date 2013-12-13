@@ -80,11 +80,11 @@ public class ProjectExporter {
         write(fw, "<html>\n<head>\n" + charsetString + "<title>"
                 + prj.getTitle()
                 + "</title>\n</head>\n<body>\n<h1 class=\"projecttitle\">"
-                + prj.getTitle() + "</h1><br/>\n");
+                + prj.getTitle() + "</h1><br></br>\n");
         generateToc(fw, notes);
         generateChunks(fw, notes);
-        write(fw, "\n<hr><a href=\"http://memoranda.sf.net\">Memoranda</a> "
-                + App.VERSION_INFO + "\n<br>\n" + new Date().toString()
+        write(fw, "\n<hr></hr><a href=\"http://memoranda.sf.net\">Memoranda</a> "
+                + App.VERSION_INFO + "\n<br></br>\n" + new Date().toString()
                 + "\n</body>\n</html>");
         try {
             fw.flush();
@@ -137,16 +137,16 @@ public class ProjectExporter {
                 .compile("</body>", java.util.regex.Pattern.DOTALL
                         + java.util.regex.Pattern.CASE_INSENSITIVE).split(text)[0];
         /*
-		 * if (_copyImages) { ?)\"" + java.util.regex.Pattern.DOTALL +
-		 * java.util.regex.Pattern.CASE_INSENSITIVE); Matcher m =
-		 * p.matcher(text); for (int i = 1; i < m.groupCount(); i++) { String g =
-		 * m.group(i); String url = g.split("\"")[1];
-		 *  }
-		 */
+                 * if (_copyImages) { ?)\"" + java.util.regex.Pattern.DOTALL +
+                 * java.util.regex.Pattern.CASE_INSENSITIVE); Matcher m =
+                 * p.matcher(text); for (int i = 1; i < m.groupCount(); i++) { String g =
+                 * m.group(i); String url = g.split("\"")[1];
+                 *  }
+                 */
         text = "<div class=\"note\">" + text + "</div>";
 
         if (_titlesAsHeaders)
-			text = "\n\n<div class=\"date\">"
+                        text = "\n\n<div class=\"date\">"
                     + note.getDate().getFullDateString()
                     + ":</div>\n<h1 class=\"title\">" + note.getTitle()
                     + "</h1>\n" + text;
@@ -154,21 +154,21 @@ public class ProjectExporter {
     }
 
     private static String generateNav(Note prev, Note next) {
-        String s = "<hr/><div class=\"navigation\"><table border=\"0\" width=\"100%\" cellpadding=\"2\"><tr><td width=\"33%\">";
+        String s = "<hr></hr><div class=\"navigation\"><table border=\"0\" width=\"100%\" cellpadding=\"2\"><tr><td width=\"33%\">";
         if (prev != null)   
             s += "<div class=\"navitem\"><a href=\"" + prev.getId() + ".html\">"
-                    + Local.getString("Previous") + "</a><br/>"
+                    + Local.getString("Previous") + "</a><br></br>"
                     + prev.getDate().getMediumDateString() + " "
                     + prev.getTitle() + "</div>";
         
         else
             s += "&nbsp;";
-		s += "</td><td width=\"34%\" align=\"center\"><a href=\""
+                s += "</td><td width=\"34%\" align=\"center\"><a href=\""
                 + output.getName()
                 + "\">Up</a></td><td width=\"33%\" align=\"right\">";
         if (next != null) 
             s += "<div class=\"navitem\"><a href=\"" + next.getId() + ".html\">"
-                    + Local.getString("Next") + "</a><br/>"
+                    + Local.getString("Next") + "</a><br></br>"
                     + next.getDate().getMediumDateString() + " "
                     + next.getTitle() + "</div>";
         
@@ -215,7 +215,7 @@ public class ProjectExporter {
                 }
             }
             else
-				write(w, "<a name=\"" + note.getId() + "\"/>" + getNoteHTML(note) + "\n");
+                                write(w, "<a name=\"" + note.getId() + "\">" + getNoteHTML(note) + "</a>\n");
         }
     }
 

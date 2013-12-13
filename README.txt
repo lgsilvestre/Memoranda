@@ -1,7 +1,14 @@
-Cristian Branch 3.0
+Master Branch 5.0
+Release notes (Ingeniería de Software)
+
+La presente revisión del software es el merge manual de las implementaciones de 
+la Tarea 2 sobre el merge de la Tarea 1, en el cual se incluyen (además de las 
+funcionalidades de formato y prioridad de Stickers) las nuevas opciones de 
+importación y exportación de información de Memoranda (stickers, notas, entre
+otros).   
+================================================================================
   
-  
-                          Memoranda version 1.0-RC3.1
+                          Memoranda version 1.1-RC3.1
 
 ================================================================================
 
