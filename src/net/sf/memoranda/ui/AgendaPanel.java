@@ -166,10 +166,13 @@ public class AgendaPanel extends JPanel {
 						int last=sticker.lastIndexOf("<");
 						int backcolor=sticker.indexOf("#");
 						int fontcolor=sticker.indexOf("#", backcolor+1);
+						int sizeposition=sticker.indexOf("font-size")+10;
+						int size=Integer.parseInt(sticker.substring(sizeposition,sizeposition+2));
+						System.out.println(size+" "+sizeposition);
 						int sP=Integer.parseInt(pre_sticker.getAttributeValue("priority"));
 						String backGroundColor=sticker.substring(backcolor, sticker.indexOf(';',backcolor));
 						String foreGroundColor=sticker.substring(fontcolor, sticker.indexOf(';',fontcolor));
-						StickerDialog dlg = new StickerDialog(App.getFrame(), sticker.substring(first+1, last), backGroundColor, foreGroundColor, sP);
+						StickerDialog dlg = new StickerDialog(App.getFrame(), sticker.substring(first+1, last), backGroundColor, foreGroundColor, sP, size);
 						Dimension frmSize = App.getFrame().getSize();
 						dlg.setSize(new Dimension(300,380));
 						Point loc = App.getFrame().getLocation();
@@ -178,6 +181,7 @@ public class AgendaPanel extends JPanel {
 						dlg.setVisible(true);
 						if (!dlg.CANCELLED) {
 							String txt = dlg.getStickerText();
+							sP = dlg.getPriority();
 							txt = txt.replaceAll("\\n", "<br>");
 							txt = "<div style=\"background-color:"+dlg.getStickerColor()+";font-size:"+dlg.getStickerTextSize()+";color:"+dlg.getStickerTextColor()+";\">"+txt+"</div>";
 							EventsManager.removeSticker(id);

@@ -88,7 +88,7 @@ public class ExportSticker {
         String nl = System.getProperty("line.separator"); 
                 for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
             String id = (String)i.next();
-            result += (String)stickers.get(id)+nl;
+            result += (String)(((Element)stickers.get(id)).getValue())+nl;
             }
             
                 return result;

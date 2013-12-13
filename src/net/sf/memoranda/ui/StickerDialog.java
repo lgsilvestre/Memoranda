@@ -108,7 +108,7 @@ public class StickerDialog extends JDialog {
 			new ExceptionDialog(ex);
 		}
 	}
-	public StickerDialog(Frame frame, String text, String backcolor, String forecolor, int sP){
+	public StickerDialog(Frame frame, String text, String backcolor, String forecolor, int sP, int size){
 		super(frame, Local.getString("Sticker"), true);
 		try {
 			jbInit();
@@ -133,6 +133,11 @@ public class StickerDialog extends JDialog {
 			priorityList.setSelectedIndex(sP);
 		else
 			priorityList.setSelectedIndex(2);
+		if(size==10)
+			fontSize.setSelectedIndex(0);
+		else if(size == 20)
+			fontSize.setSelectedIndex(2);
+		else fontSize.setSelectedIndex(1);
 	}
 
 	public StickerDialog() {
